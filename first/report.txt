@@ -1,0 +1,28 @@
+Alex Baranowski
+Computer Architecture
+Programming Assignment 4 Report
+12-03-2018
+
+Note: My first.c source code takes into account the extra credit using LRU. Please make sure to go through the testcases that incorperate LRU. 
+Thank you.
+
+The data structures I used for the cache build began with an array of pointers pointing to first, the regular cache, and second, the prefetcher cache.
+
+struct Block{
+    unsigned long int tag;
+    int blockOffset;
+    unsigned int metadata;
+}
+
+The code above was what I used to construct each block. The blocks were put into an array that held struct Block pointers (struct Block*) and acted as the sets. To figure out which array position the block was to be put it, I used the index taken from each address.
+The sets were held in another array that was constructed using Block* pointers (struct Block**). This array was each cache.
+
+Essentially the structure of my cache is a 3-dementional array with caches pointing to sets pointing to blocks.
+
+The metadata was used to store what address was being stored using an unsigned integer. The metadata was basically a counter that would tell you if the block was the first to be added in the set, that block's metadata would be the lowest in value. The last block added to the block would have the largest value in the set.
+
+What I learned about the prefetcher is that it basically predicted the use of future memory. If the user asked for memory 0x300 and recieved a cache miss the prefetcher would activate. If the current block size was 4 bytes, the prefetcher would check for 0x304 in the cache and go to memory to attain it if it were to get a cache miss. This took advantage of spacial locality in that it grabbed a nearby address relative to the address the user requested. That information in the cache then gave the cache a higher probability of getting a hit and saving time because it does not need to go to memory again to attain that address.
+The prefetcher made sure that if it was likely an address near the one requested by the user was going to be used, it would take advantage on the oppurtunity and prepare for when the request of the prefetched address was made. The prefetcher made sure the cache used its trips to memory more efficiently which would result in more cache hits and less reads from memory.
+
+Note: My first.c source code takes into account the extra credit using LRU. Please make sure to go through the testcases that incorperate LRU. 
+Thank you.
